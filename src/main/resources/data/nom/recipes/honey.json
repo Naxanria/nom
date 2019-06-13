@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "group": "honey",
+  "ingredients": [
+    {
+      "item": "nom:honey_comb"
+    }
+  ],
+  "result": {
+    "item": "nom:honey",
+    "count": 2
+  }
+}

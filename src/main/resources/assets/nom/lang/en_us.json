@@ -1,5 +1,10 @@
 {
   "itemGroup.nom": "NOM",
 
-  "item.nom.cooked_carrot": "Cooked Carrot"
+  "item.nom.cooked_carrot": "Cooked Carrot",
+  "item.nom.honey_glazed_carrot": "Honey Glazed Carrot",
+  "item.nom.honey_comb": "Honey Comb",
+  "item.nom.honey": "Honey",
+
+  "block.nom.bee_hive": "Bee Hive"
 }

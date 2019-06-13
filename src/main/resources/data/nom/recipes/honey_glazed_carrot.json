@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "group": "honey_glazed_carrot",
+  "pattern":
+  [
+    "HHH",
+    "HCH",
+    "HHH"
+  ],
+  "key": {
+    "H": {
+      "item": "nom:honey"
+    },
+    "C": {
+      "item": "nom:cooked_carrot"
+    }
+  },
+  "result":
+  {
+    "item": "nom:honey_glazed_carrot"
+  }
+}

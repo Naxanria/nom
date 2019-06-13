@@ -1,6 +1,7 @@
 package com.naxanria.nom;
 
-import net.minecraftforge.common.MinecraftForge;
+import com.naxanria.nom.world.NomWorldGen;
+import net.minecraftforge.fml.DeferredWorkQueue;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
@@ -21,19 +22,19 @@ public class Nom
     
     FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
     FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setupClient);
-  
-    MinecraftForge.EVENT_BUS.register(this);
+    
+//    MinecraftForge.EVENT_BUS.register(this);
   }
   
   private void setup(final FMLCommonSetupEvent event)
   {
     LOGGER.info("Common setup");
+    NomRegistry.registerFeatures();
+    NomWorldGen.setup();
   }
   
   private void setupClient(final FMLClientSetupEvent event)
   {
     LOGGER.info("Client setup");
   }
-  
-  
 }
