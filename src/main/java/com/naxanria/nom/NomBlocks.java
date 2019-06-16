@@ -8,4 +8,8 @@ import net.minecraftforge.registries.ObjectHolder;
 public class NomBlocks
 {
   public static final Block BEE_HIVE = Blocks.AIR;
+  
+  public static final Block CINNAMON_LEAVES = Blocks.AIR;
+  public static final Block CINNAMON_LOG = Blocks.AIR;
+  public static final Block STRIPPED_CINNAMON_LOG = Blocks.AIR;
 }

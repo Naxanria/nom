@@ -8,5 +8,8 @@ import net.minecraftforge.registries.ObjectHolder;
 public class NomItems
 {
   public static final Item COOKED_CARROT = Items.AIR;
-
+  public static final Item HONEY_GLAZED_CARROT = Items.AIR;
+  public static final Item HONEY = Items.AIR;
+  public static final Item HONEY_COMB = Items.AIR;
+  public static final Item CINNAMON = Items.AIR;
 }

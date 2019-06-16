@@ -1,17 +1,32 @@
 package com.naxanria.nom;
 
 import com.naxanria.nom.block.BeeHiveBlock;
+import com.naxanria.nom.block.CustomLeavesBlock;
+import com.naxanria.nom.block.CustomLogBlock;
+import com.naxanria.nom.block.StrippableLogBlock;
+import com.naxanria.nom.block.trees.CinnamonSapling;
+import com.naxanria.nom.block.trees.CinnamonTreeFeature;
+import com.naxanria.nom.util.BiomeList;
 import com.naxanria.nom.util.Time;
-import com.naxanria.nom.world.*;
+import com.naxanria.nom.util.WorldUtil;
+import com.naxanria.nom.world.BlockPlaceFeature;
+import com.naxanria.nom.world.BlockPlacement;
+import com.naxanria.nom.world.NomWorldGen;
+import com.naxanria.nom.world.TreePlacement;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
+import net.minecraft.block.SoundType;
+import net.minecraft.block.material.Material;
+import net.minecraft.block.material.MaterialColor;
 import net.minecraft.item.*;
 import net.minecraft.potion.Effect;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.biome.Biomes;
 import net.minecraft.world.gen.GenerationStage;
+import net.minecraft.world.gen.feature.NoFeatureConfig;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -53,27 +68,27 @@ public class NomRegistry
   
   private static Item registerFood(String name, int food, float saturation, EffectInstance effectInstance, float chance)
   {
-    Food.Builder builder = new Food.Builder().func_221456_a(food).func_221454_a(saturation);
+    Food.Builder builder = new Food.Builder().hunger(food).saturation(saturation);
     if (effectInstance != null)
     {
-      builder.func_221452_a(effectInstance, chance);
+      builder.effect(effectInstance, chance);
     }
     
-    return registerItem(name, new Item(getProperties().func_221540_a(builder.func_221453_d())));
+    return registerItem(name, new Item(getItemProperties().food(builder.build())));
   }
   
   private static <T extends Block> T registerBlock(String name, T block)
   {
     return registerBlock(name, block, true);
   }
-  
-  private static <T extends Block> T registerBlock(String name, T block,  boolean createItemBlock)
+
+  private static <T extends Block> T registerBlock(String name, T block, boolean createItemBlock)
   {
     block.setRegistryName(new ResourceLocation(Nom.MODID, name));
     
     if (createItemBlock)
     {
-      blockItems.add((BlockItem) new BlockItem(block, getProperties()).setRegistryName(new ResourceLocation(Nom.MODID, name)));
+      blockItems.add((BlockItem) new BlockItem(block, getItemProperties()).setRegistryName(new ResourceLocation(Nom.MODID, name)));
     }
     
     blockRegistry.register(block);
@@ -84,14 +99,21 @@ public class NomRegistry
   @SubscribeEvent
   public static void onRegisterBlocks(final RegistryEvent.Register<Block> event)
   {
+    Nom.LOGGER.info("Block registration");
     blockRegistry = event.getRegistry();
     
     registerBlock("bee_hive", new BeeHiveBlock(Block.Properties.create(NomMaterials.BEE_HIVE)));
+    
+    Block stripped = registerBlock("stripped_cinnamon_log", new CustomLogBlock(MaterialColor.WOOD, Block.Properties.create(Material.WOOD).hardnessAndResistance(2f).sound(SoundType.WOOD)));
+    registerBlock("cinnamon_log", new StrippableLogBlock(MaterialColor.WOOD, getBlockProperties(Material.WOOD).hardnessAndResistance(2f).sound(SoundType.WOOD), stripped));
+    registerBlock("cinnamon_leaves", new CustomLeavesBlock(getBlockProperties(Material.LEAVES).hardnessAndResistance(0.2f).tickRandomly().sound(SoundType.PLANT)));
+    registerBlock("cinnamon_sapling", new CinnamonSapling(getBlockProperties(Material.PLANTS).doesNotBlockMovement().tickRandomly().hardnessAndResistance(0).sound(SoundType.PLANT)));
   }
   
   @SubscribeEvent
   public static void onRegisterItems(final RegistryEvent.Register<Item> event)
   {
+    Nom.LOGGER.info("Item registration");
     itemRegistry = event.getRegistry();
   
     for (BlockItem blockItem :
@@ -102,14 +124,21 @@ public class NomRegistry
     
     registerFood("cooked_carrot", 5, 0.6f);
     
-    registerFood("honey_glazed_carrot", 12, 1.2f, getEffect(Effects.field_76439_r, Time.Ticks.MINUTE * 3, 1), 1f); // night vision
-    registerItem("honey_comb", new Item(getProperties()));
+    registerFood("honey_glazed_carrot", 12, 1.2f, getEffect(Effects.NIGHT_VISION, Time.Ticks.MINUTE * 3, 1), 1f); // night vision
+    registerItem("honey_comb", new Item(getItemProperties()));
     registerFood("honey", 1, 0.1f);
+    
+    registerFood("cinnamon", 1, 0.1f, getEffect(Effects.LEVITATION, Time.Ticks.SECOND * 2, 10), 0.3f);
   }
   
-  private static Item.Properties getProperties()
+  private static Item.Properties getItemProperties()
   {
     return new Item.Properties().group(itemGroup);
+  }
+  
+  private static Block.Properties getBlockProperties(Material material)
+  {
+    return Block.Properties.create(material);
   }
   
   private static EffectInstance getEffect(Effect effect, int duration, int strength)
@@ -120,6 +149,33 @@ public class NomRegistry
   
   public static void registerFeatures()
   {
-    NomWorldGen.create(GenerationStage.Decoration.VEGETAL_DECORATION, BeeHiveFeature.INSTANCE, BeeHivePlacement.INSTANCE, Biomes.PLAINS, Biomes.BIRCH_FOREST, Biomes.FOREST, Biomes.FLOWER_FOREST);
+    NomWorldGen.create
+    (
+      GenerationStage.Decoration.VEGETAL_DECORATION,
+      BlockPlaceFeature.builder().addAboveCheck(Blocks.OAK_LEAVES, Blocks.BIRCH_LEAVES).addBlock(NomBlocks.BEE_HIVE, 1).build(),
+      new BlockPlacement(1),
+      BiomeList.BIRCH.copy().addAll(Biomes.FOREST, Biomes.PLAINS)
+    );
+    
+    NomWorldGen.create
+    (
+      GenerationStage.Decoration.VEGETAL_DECORATION,
+      new CinnamonTreeFeature(NoFeatureConfig::deserialize, true),
+      TreePlacement.get(1),
+      BiomeList.JUNGLE
+    );
+  }
+  
+  public static void postInit()
+  {
+    ((StrippableLogBlock) NomBlocks.CINNAMON_LOG).setStripCallback((wp, rand) ->
+    {
+      int roll = MathHelper.nextInt(rand, 0, 3);
+      for (int i = 0; i < roll; i++)
+      {
+        ItemStack cinnamon = new ItemStack(NomItems.CINNAMON, 1);
+        WorldUtil.spawnAsEntity(wp.world, wp.pos, cinnamon);
+      }
+    });
   }
 }

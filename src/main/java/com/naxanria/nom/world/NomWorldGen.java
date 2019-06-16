@@ -1,5 +1,6 @@
 package com.naxanria.nom.world;
 
+import com.naxanria.nom.util.BiomeList;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.GenerationStage;
 import net.minecraft.world.gen.feature.ConfiguredFeature;
@@ -21,13 +22,22 @@ public class NomWorldGen
 {
   private static Map<Biome, List<FeatureData>> featureMap = new HashMap<>();
   
+  public static FeatureData<NoFeatureConfig, NoPlacementConfig> create(GenerationStage.Decoration decorationStage, Feature<NoFeatureConfig> feature, Placement<NoPlacementConfig> placement, BiomeList biomes)
+  {
+    return create(decorationStage, feature, NoFeatureConfig.NO_FEATURE_CONFIG, placement, NoPlacementConfig.NO_PLACEMENT_CONFIG, biomes);
+  }
+  
   public static FeatureData<NoFeatureConfig, NoPlacementConfig> create(GenerationStage.Decoration decorationStage, Feature<NoFeatureConfig> feature, Placement<NoPlacementConfig> placement, Biome... biomes)
   {
     return create(decorationStage, feature, NoFeatureConfig.NO_FEATURE_CONFIG, placement, NoPlacementConfig.NO_PLACEMENT_CONFIG, biomes);
   }
   
-  
   public static <F extends IFeatureConfig, P extends IPlacementConfig> FeatureData<F, P> create(GenerationStage.Decoration decorationStage, Feature<F> feature, F featureConfig, Placement<P> placement, P placementConfig, Biome... biomes)
+  {
+    return new FeatureData<>(decorationStage, feature, featureConfig, placement, placementConfig, biomes);
+  }
+  
+  public static <F extends IFeatureConfig, P extends IPlacementConfig> FeatureData<F, P> create(GenerationStage.Decoration decorationStage, Feature<F> feature, F featureConfig, Placement<P> placement, P placementConfig, BiomeList biomes)
   {
     return new FeatureData<>(decorationStage, feature, featureConfig, placement, placementConfig, biomes);
   }
@@ -39,8 +49,13 @@ public class NomWorldGen
   
     FeatureData(GenerationStage.Decoration decorationStage, Feature<F> feature, F featureConfig, Placement<P> placement, P placementConfig, Biome... biomes)
     {
+      this(decorationStage, feature, featureConfig, placement, placementConfig, BiomeList.asList(biomes));
+    }
+    
+    FeatureData(GenerationStage.Decoration decorationStage, Feature<F> feature, F featureConfig, Placement<P> placement, P placementConfig, BiomeList biomes)
+    {
       this.decorationStage = decorationStage;
-      configuredFeature = Biome.func_222280_a(feature, featureConfig, placement, placementConfig);
+      configuredFeature = Biome.createDecoratedFeature(feature, featureConfig, placement, placementConfig);
   
       for (Biome biome :
         biomes)

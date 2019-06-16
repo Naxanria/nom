@@ -6,6 +6,9 @@ import net.minecraft.block.material.PushReaction;
 
 public class NomMaterials
 {
+  public static final Material BEE_HIVE = new Builder(MaterialColor.WOOL).setRequiresTool().setOpaque(false).build();
+  public static final Material CINNAMON_WOOD = new Builder(MaterialColor.CYAN_TERRACOTTA).setFlammable(true).build();
+  
   public static class Builder
   {
     private final MaterialColor color;
@@ -98,5 +101,5 @@ public class NomMaterials
     }
   }
   
-  public static final Material BEE_HIVE = new Builder(MaterialColor.WOOL).setRequiresTool().setOpaque(false).build();
+  
 }

@@ -1,0 +1,7 @@
+{
+  "parent": "block/cube_column",
+  "textures": {
+    "end": "nom:block/cinnamon_log_side",
+    "side": "nom:block/cinnamon_log_stripped"
+  }
+}
