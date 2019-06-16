@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "group": "dough",
+  "ingredients" :
+  [
+    { "item": "nom:flour" },
+    { "item": "nom:flour" },
+    { "item": "minecraft:water_bucket" }
+  ],
+  "result":
+  {
+    "item": "nom:dough"
+  }
+}

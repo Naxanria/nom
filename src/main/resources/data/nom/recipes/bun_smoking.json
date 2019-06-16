@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:smoking",
+  "ingredient": {
+    "item": "nom:dough"
+  },
+  "result": "nom:bun",
+  "experience": 0.5,
+  "cookintime": 100
+}

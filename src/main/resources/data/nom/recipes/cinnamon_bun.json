@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "group": "cinnamon_bun",
+  "ingredients": [
+    { "item": "nom:cinnamon" },
+    { "item": "nom:cinnamon" },
+    { "item": "nom:cinnamon" },
+    { "item": "nom:cinnamon" },
+    { "item": "nom:bun" }
+  ],
+  "result": {
+    "item": "nom:cinnamon_bun"
+  }
+}
