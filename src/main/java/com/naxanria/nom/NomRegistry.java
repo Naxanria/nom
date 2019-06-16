@@ -129,6 +129,16 @@ public class NomRegistry
     registerFood("honey", 1, 0.1f);
     
     registerFood("cinnamon", 1, 0.1f, getEffect(Effects.LEVITATION, Time.Ticks.SECOND * 2, 10), 0.3f);
+    
+    registerItem("flour", new Item(getItemProperties()));
+    
+    registerFood("dough", 1, 0.2f, getEffect(Effects.NAUSEA, Time.Ticks.SECOND * 2, 1), 0.33f);
+    registerFood("bun", 6, 2);
+    registerFood("cinnamon_bun", 8, 8, getEffect(Effects.ABSORPTION, Time.Ticks.SECOND * 10, 1), 1);
+    
+    // **** Tools ****//
+    
+    registerItem("grinder", new Item(getItemProperties().maxDamage(120).maxStackSize(1)));
   }
   
   private static Item.Properties getItemProperties()
