@@ -1,3 +1,12 @@
 {
-
+  "type": "nom:crafting_grinder",
+  "group": "flour",
+  "ingredients": [
+    {
+      "item": "minecraft:wheat"
+    }
+  ],
+  "result": {
+    "item": "nom:flour"
+  }
 }

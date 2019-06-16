@@ -6,6 +6,7 @@ import com.naxanria.nom.block.CustomLogBlock;
 import com.naxanria.nom.block.StrippableLogBlock;
 import com.naxanria.nom.block.trees.CinnamonSapling;
 import com.naxanria.nom.block.trees.CinnamonTreeFeature;
+import com.naxanria.nom.recipe.GrinderRecipe;
 import com.naxanria.nom.util.BiomeList;
 import com.naxanria.nom.util.Time;
 import com.naxanria.nom.util.WorldUtil;
@@ -19,6 +20,7 @@ import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialColor;
 import net.minecraft.item.*;
+import net.minecraft.item.crafting.IRecipeSerializer;
 import net.minecraft.potion.Effect;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
@@ -30,6 +32,8 @@ import net.minecraft.world.gen.feature.NoFeatureConfig;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.IForgeRegistry;
 
 import java.util.ArrayList;
@@ -138,7 +142,14 @@ public class NomRegistry
     
     // **** Tools ****//
     
-    registerItem("grinder", new Item(getItemProperties().maxDamage(120).maxStackSize(1)));
+    registerItem("grinder", new Item(getItemProperties().maxDamage(120)));
+  }
+  
+  @SubscribeEvent
+  public static void registerRecipes(final RegistryEvent.Register<IRecipeSerializer<?>> event)
+  {
+    event.getRegistry().register(GrinderRecipe.SERIALIZER);
+//    ForgeRegistries.RECIPE_SERIALIZERS.register(GrinderRecipe.SERIALIZER);
   }
   
   private static Item.Properties getItemProperties()

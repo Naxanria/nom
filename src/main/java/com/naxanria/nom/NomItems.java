@@ -12,4 +12,6 @@ public class NomItems
   public static final Item HONEY = Items.AIR;
   public static final Item HONEY_COMB = Items.AIR;
   public static final Item CINNAMON = Items.AIR;
+  
+  public static final Item GRINDER = Items.AIR;
 }
