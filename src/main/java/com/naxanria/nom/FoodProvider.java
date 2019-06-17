@@ -91,6 +91,12 @@ public class FoodProvider
   
   public static Food getFood(String id)
   {
-    return foodMap.getOrDefault(id, new Food.Builder().build());
+    if (!foodMap.containsKey(id))
+    {
+      Nom.LOGGER.warn("Could not find food entry for {}", id);
+      return new Food.Builder().build();
+    }
+    
+    return foodMap.get(id);
   }
 }

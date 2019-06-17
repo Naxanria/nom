@@ -135,12 +135,40 @@ public class NomRegistry
       itemRegistry.register(blockItem);
     }
     
-    FoodProvider.add("test", new Food.Builder().hunger(10).build());
-    FoodProvider.add("test2", new Food.Builder().hunger(10).effect(getEffect(Effects.NAUSEA, 20, 1), 1).build());
+    // food defaults
+    FoodProvider.add("cooked_carrot", builder(5, 0.6f).build());
+    FoodProvider.add("honey_glazed_carrot", builder(12, 1.2f).effect(getEffect(Effects.NIGHT_VISION, Time.Ticks.MINUTE * 3, 1), 1).build());
+    FoodProvider.add("honey", builder(1, 0.1f).build());
+    FoodProvider.add("cinnamon", builder(1, 0.1f).effect(getEffect(Effects.LEVITATION, Time.Ticks.SECOND * 2, 10), 0.3f).build());
+    FoodProvider.add("dough", builder(1, 0.2f).effect(getEffect(Effects.NAUSEA, Time.Ticks.SECOND * 4, 1), 0.3f).build());
+    FoodProvider.add("bun", builder(6, 2f).build());
+    FoodProvider.add("cinnamon_bun", builder(8, 8f).effect(getEffect(Effects.ABSORPTION, Time.Ticks.SECOND * 10, 1), 1f).build());
     
-    FoodProvider.add("cooked_carrot", new Food.Builder().hunger(5).saturation(0.6f).build());
-    FoodProvider.add("honey_glazed_carrot", new Food.Builder().hunger(12).saturation(1.2f).effect(getEffect(Effects.NIGHT_VISION, Time.Ticks.MINUTE * 3, 1), 1).build());
+    updateFoodJson();
     
+    registerFood("cooked_carrot");
+    registerFood("honey_glazed_carrot");
+    registerFood("honey");
+    registerFood("cinnamon");
+    registerFood("dough");
+    registerFood("bun");
+    registerFood("cinnamon_bun");
+  
+    registerItem("honey_comb", new Item(getItemProperties()));
+    registerItem("flour", new Item(getItemProperties()));
+  
+    // **** Tools ****//
+    
+    registerItem("grinder", new Item(getItemProperties().maxDamage(120)));
+  }
+  
+  private static Food.Builder builder(int hunger, float saturation)
+  {
+    return new Food.Builder().hunger(hunger).saturation(saturation);
+  }
+  
+  private static void updateFoodJson()
+  {
     JsonProvider.writeToDisk(Nom.getConfigSubFile("default_foods.json"), FoodProvider.writeToJson());
     
     File foodsFile = Nom.getConfigSubFile("foods.json");
@@ -152,28 +180,6 @@ public class NomRegistry
     {
       FoodProvider.readFromJson(JsonProvider.readFromDisk(Nom.getConfigSubFile("foods.json")));
     }
-    
-//    registerFood("cooked_carrot", 5, 0.6f);
-    
-//    registerFood("honey_glazed_carrot", 12, 1.2f, getEffect(Effects.NIGHT_VISION, Time.Ticks.MINUTE * 3, 1), 1f); // night vision
-    
-    registerFood("cooked_carrot");
-    registerFood("honey_glazed_carrot");
-    
-    registerItem("honey_comb", new Item(getItemProperties()));
-    registerFood("honey", 1, 0.1f);
-    
-    registerFood("cinnamon", 1, 0.1f, getEffect(Effects.LEVITATION, Time.Ticks.SECOND * 2, 10), 0.3f);
-    
-    registerItem("flour", new Item(getItemProperties()));
-    
-    registerFood("dough", 1, 0.2f, getEffect(Effects.NAUSEA, Time.Ticks.SECOND * 2, 1), 0.33f);
-    registerFood("bun", 6, 2);
-    registerFood("cinnamon_bun", 8, 8, getEffect(Effects.ABSORPTION, Time.Ticks.SECOND * 10, 1), 1);
-    
-    // **** Tools ****//
-    
-    registerItem("grinder", new Item(getItemProperties().maxDamage(120)));
   }
   
   @SubscribeEvent
