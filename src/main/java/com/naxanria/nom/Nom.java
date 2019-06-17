@@ -1,12 +1,17 @@
 package com.naxanria.nom;
 
 import com.naxanria.nom.world.NomWorldGen;
+import net.minecraft.client.Minecraft;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraftforge.fml.loading.FMLPaths;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import java.io.File;
+import java.nio.file.Path;
 
 @Mod("nom")
 public class Nom
@@ -15,12 +20,28 @@ public class Nom
   public static final String MODID = "nom";
   public static final String NAME = "Nax's Organic Menu";
   
+  public static Path configFolder;
+  
   public Nom()
   {
     LOGGER.info("Loading " + NAME);
     
     FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
     FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setupClient);
+  
+    configFolder = FMLPaths.CONFIGDIR.get().resolve(MODID + "/");
+    File configFolderFile = configFolder.toFile();
+    if (!configFolderFile.exists())
+    {
+      if (configFolderFile.mkdir())
+      {
+        LOGGER.info("Created config folder");
+      }
+      else
+      {
+        LOGGER.warn("failed to create config folder");
+      }
+    }
   }
   
   private void setup(final FMLCommonSetupEvent event)
@@ -34,5 +55,10 @@ public class Nom
   private void setupClient(final FMLClientSetupEvent event)
   {
     LOGGER.info("Client setup");
+  }
+  
+  public static File getConfigSubFile(String fileName)
+  {
+    return new File(configFolder.toFile(), fileName);
   }
 }

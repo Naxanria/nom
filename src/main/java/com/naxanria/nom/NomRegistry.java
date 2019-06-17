@@ -8,8 +8,10 @@ import com.naxanria.nom.block.trees.CinnamonSapling;
 import com.naxanria.nom.block.trees.CinnamonTreeFeature;
 import com.naxanria.nom.recipe.GrinderRecipe;
 import com.naxanria.nom.util.BiomeList;
+import com.naxanria.nom.util.StringUtil;
 import com.naxanria.nom.util.Time;
 import com.naxanria.nom.util.WorldUtil;
+import com.naxanria.nom.util.json.JsonProvider;
 import com.naxanria.nom.world.BlockPlaceFeature;
 import com.naxanria.nom.world.BlockPlacement;
 import com.naxanria.nom.world.NomWorldGen;
@@ -36,6 +38,7 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.IForgeRegistry;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -63,6 +66,12 @@ public class NomRegistry
     itemRegistry.register(item);
     
     return item;
+  }
+  
+  private static Item registerFood(String name)
+  {
+    Food food = FoodProvider.getFood(name);
+    return registerItem(name, new Item(getItemProperties().food(food)));
   }
   
   private static Item registerFood(String name, int food, float saturation)
@@ -126,9 +135,31 @@ public class NomRegistry
       itemRegistry.register(blockItem);
     }
     
-    registerFood("cooked_carrot", 5, 0.6f);
+    FoodProvider.add("test", new Food.Builder().hunger(10).build());
+    FoodProvider.add("test2", new Food.Builder().hunger(10).effect(getEffect(Effects.NAUSEA, 20, 1), 1).build());
     
-    registerFood("honey_glazed_carrot", 12, 1.2f, getEffect(Effects.NIGHT_VISION, Time.Ticks.MINUTE * 3, 1), 1f); // night vision
+    FoodProvider.add("cooked_carrot", new Food.Builder().hunger(5).saturation(0.6f).build());
+    FoodProvider.add("honey_glazed_carrot", new Food.Builder().hunger(12).saturation(1.2f).effect(getEffect(Effects.NIGHT_VISION, Time.Ticks.MINUTE * 3, 1), 1).build());
+    
+    JsonProvider.writeToDisk(Nom.getConfigSubFile("default_foods.json"), FoodProvider.writeToJson());
+    
+    File foodsFile = Nom.getConfigSubFile("foods.json");
+    if (!foodsFile.exists())
+    {
+      JsonProvider.writeToDisk(foodsFile, FoodProvider.writeToJson());
+    }
+    else
+    {
+      FoodProvider.readFromJson(JsonProvider.readFromDisk(Nom.getConfigSubFile("foods.json")));
+    }
+    
+//    registerFood("cooked_carrot", 5, 0.6f);
+    
+//    registerFood("honey_glazed_carrot", 12, 1.2f, getEffect(Effects.NIGHT_VISION, Time.Ticks.MINUTE * 3, 1), 1f); // night vision
+    
+    registerFood("cooked_carrot");
+    registerFood("honey_glazed_carrot");
+    
     registerItem("honey_comb", new Item(getItemProperties()));
     registerFood("honey", 1, 0.1f);
     

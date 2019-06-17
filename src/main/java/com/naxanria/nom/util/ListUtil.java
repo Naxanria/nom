@@ -3,6 +3,7 @@ package com.naxanria.nom.util;
 import net.minecraft.util.NonNullList;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.BiPredicate;
@@ -47,6 +48,11 @@ public class ListUtil
     }
     
     return Optional.empty();
+  }
+  
+  public static <T> List<T> asList(T[] ts)
+  {
+    return new ArrayList<>(Arrays.asList(ts));
   }
   
   public static <T> List<T> asList(NonNullList<T> listIn)
