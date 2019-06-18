@@ -120,6 +120,7 @@ public class NomRegistry
     blockRegistry = event.getRegistry();
     
     registerBlock("bee_hive", new BeeHiveBlock(Block.Properties.create(NomMaterials.BEE_HIVE)));
+    registerBlock("apiary", new Block(getBlockProperties(Material.WOOD)));
     
     Block stripped = registerBlock("stripped_cinnamon_log", new CustomLogBlock(MaterialColor.WOOD, Block.Properties.create(Material.WOOD).hardnessAndResistance(2f).sound(SoundType.WOOD)));
     registerBlock("cinnamon_log", new StrippableLogBlock(MaterialColor.WOOD, getBlockProperties(Material.WOOD).hardnessAndResistance(2f).sound(SoundType.WOOD), stripped));
@@ -159,6 +160,7 @@ public class NomRegistry
     registerFood("cinnamon_bun");
   
     registerItem("honey_comb", new Item(getItemProperties()));
+    registerItem("bee", new Item(getItemProperties().maxStackSize(16)));
     registerItem("flour", new Item(getItemProperties()));
   
     // **** Tools ****//

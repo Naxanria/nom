@@ -1,0 +1,12 @@
+{
+  "parent": "block/cube",
+  "textures": {
+    "particle": "nom:block/apiary_base",
+    "down": "nom:block/apiary_base",
+    "up": "nom:block/apiary_base",
+    "north": "nom:block/apiary_base_side",
+    "east": "nom:block/apiary_base_side",
+    "south": "nom:block/apiary_base_side",
+    "west": "nom:block/apiary_base_side"
+  }
+}
