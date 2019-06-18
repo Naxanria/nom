@@ -1,23 +1,11 @@
 package com.naxanria.nom;
 
-import com.google.common.collect.Lists;
-import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import com.google.gson.stream.JsonWriter;
-import com.naxanria.nom.util.ListUtil;
-import com.naxanria.nom.util.json.JsonProvider;
 import com.naxanria.nom.util.json.Serializers;
 import net.minecraft.item.Food;
 import net.minecraft.util.JSONUtils;
-import net.minecraftforge.common.util.JsonUtils;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.StringWriter;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;
 
