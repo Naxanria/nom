@@ -49,7 +49,7 @@ public class CinnamonTreeFeature extends AbstractTreeFeature<NoFeatureConfig>
         }
       }
   
-      Nom.LOGGER.info("Generating tree at [{} {} {}]", position.getX(), position.getY(), position.getZ());
+//      Nom.LOGGER.info("Generating tree at [{} {} {}]", position.getX(), position.getY(), position.getZ());
       
       if (isSoil(worldIn, position.down(), getSapling()))
       {
