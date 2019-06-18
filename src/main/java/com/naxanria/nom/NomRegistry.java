@@ -142,7 +142,7 @@ public class NomRegistry
     FoodProvider.add("cinnamon", builder(1, 0.1f).effect(getEffect(Effects.LEVITATION, Time.Ticks.SECOND * 2, 10), 0.3f).build());
     FoodProvider.add("dough", builder(1, 0.2f).effect(getEffect(Effects.NAUSEA, Time.Ticks.SECOND * 4, 1), 0.3f).build());
     FoodProvider.add("bun", builder(6, 2f).build());
-    FoodProvider.add("cinnamon_bun", builder(8, 8f).effect(getEffect(Effects.ABSORPTION, Time.Ticks.SECOND * 10, 1), 1f).build());
+    FoodProvider.add("cinnamon_bun", builder(8, 8f).effect(getEffect(Effects.ABSORPTION, Time.Ticks.MINUTE, 1), 1f).build());
     
     updateFoodJson();
     
