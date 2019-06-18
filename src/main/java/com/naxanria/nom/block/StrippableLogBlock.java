@@ -1,21 +1,16 @@
 package com.naxanria.nom.block;
 
-import com.naxanria.nom.util.WorldPos;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.LogBlock;
 import net.minecraft.block.RotatedPillarBlock;
 import net.minecraft.block.material.MaterialColor;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.AxeItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Hand;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ToolType;
 
@@ -25,7 +20,7 @@ import java.util.function.BiConsumer;
 public class StrippableLogBlock extends CustomLogBlock
 {
   private final Block stripped;
-  private BiConsumer<WorldPos, Random> stripCallback;
+  private BiConsumer<StripContext, Random> stripCallback;
   
   public StrippableLogBlock(MaterialColor materialColor, Properties properties, Block stripped)
   {
@@ -34,7 +29,7 @@ public class StrippableLogBlock extends CustomLogBlock
     this.stripped = stripped;
   }
   
-  public StrippableLogBlock setStripCallback(BiConsumer<WorldPos, Random> stripCallback)
+  public StrippableLogBlock setStripCallback(BiConsumer<StripContext, Random> stripCallback)
   {
     this.stripCallback = stripCallback;
     return this;
@@ -60,7 +55,9 @@ public class StrippableLogBlock extends CustomLogBlock
           
           if (stripCallback != null)
           {
-            stripCallback.accept(new WorldPos(world, pos), RANDOM);
+            StripContext context = new StripContext(playerEntity, world, pos, playerEntity.getHeldItem(hand));
+            
+            stripCallback.accept(context, RANDOM);
           }
         }
       }

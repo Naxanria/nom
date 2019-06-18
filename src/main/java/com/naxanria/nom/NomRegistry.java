@@ -21,6 +21,10 @@ import net.minecraft.block.Blocks;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialColor;
+import net.minecraft.enchantment.Enchantment;
+import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.enchantment.Enchantments;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.*;
 import net.minecraft.item.crafting.IRecipeSerializer;
 import net.minecraft.potion.Effect;
@@ -226,13 +230,22 @@ public class NomRegistry
   
   public static void postInit()
   {
-    ((StrippableLogBlock) NomBlocks.CINNAMON_LOG).setStripCallback((wp, rand) ->
+    // todo: loot table?
+    ((StrippableLogBlock) NomBlocks.CINNAMON_LOG).setStripCallback((context, rand) ->
     {
       int roll = MathHelper.nextInt(rand, 0, 3);
+      
+      int fortune = EnchantmentHelper.getEnchantmentLevel(Enchantments.FORTUNE, context.using);
+      
+      if (fortune > 0)
+      {
+        roll += MathHelper.nextInt(rand, 0, fortune);
+      }
+      
       for (int i = 0; i < roll; i++)
       {
         ItemStack cinnamon = new ItemStack(NomItems.CINNAMON, 1);
-        WorldUtil.spawnAsEntity(wp.world, wp.pos, cinnamon);
+        WorldUtil.spawnAsEntity(context.world, context.pos, cinnamon);
       }
     });
   }
