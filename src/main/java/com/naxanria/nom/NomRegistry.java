@@ -1,12 +1,12 @@
 package com.naxanria.nom;
 
-import com.naxanria.nom.block.BeeHiveBlock;
-import com.naxanria.nom.block.CustomLeavesBlock;
-import com.naxanria.nom.block.CustomLogBlock;
-import com.naxanria.nom.block.StrippableLogBlock;
+import com.mojang.datafixers.DataFixUtils;
+import com.mojang.datafixers.types.Type;
+import com.naxanria.nom.block.*;
 import com.naxanria.nom.block.trees.CinnamonSapling;
 import com.naxanria.nom.block.trees.CinnamonTreeFeature;
 import com.naxanria.nom.recipe.GrinderRecipe;
+import com.naxanria.nom.tile.ApiaryTile;
 import com.naxanria.nom.util.BiomeList;
 import com.naxanria.nom.util.StringUtil;
 import com.naxanria.nom.util.Time;
@@ -30,7 +30,12 @@ import net.minecraft.item.crafting.IRecipeSerializer;
 import net.minecraft.potion.Effect;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SharedConstants;
+import net.minecraft.util.datafix.DataFixesManager;
+import net.minecraft.util.datafix.TypeReferences;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.biome.Biomes;
 import net.minecraft.world.gen.GenerationStage;
@@ -45,6 +50,7 @@ import net.minecraftforge.registries.IForgeRegistry;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Supplier;
 
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
 public class NomRegistry
@@ -53,6 +59,7 @@ public class NomRegistry
   
   private static IForgeRegistry<Item> itemRegistry;
   private static IForgeRegistry<Block> blockRegistry;
+  private static IForgeRegistry<TileEntityType<?>> blockTileRegistry;
   
   private static ItemGroup itemGroup = new ItemGroup(Nom.MODID)
   {
@@ -120,12 +127,14 @@ public class NomRegistry
     blockRegistry = event.getRegistry();
     
     registerBlock("bee_hive", new BeeHiveBlock(Block.Properties.create(NomMaterials.BEE_HIVE)));
-    registerBlock("apiary", new Block(getBlockProperties(Material.WOOD)));
+    registerBlock("apiary", new TileBlock<ApiaryTile>(getBlockProperties(Material.WOOD), ((block, world, state) -> new ApiaryTile())));
     
     Block stripped = registerBlock("stripped_cinnamon_log", new CustomLogBlock(MaterialColor.WOOD, Block.Properties.create(Material.WOOD).hardnessAndResistance(2f).sound(SoundType.WOOD)));
     registerBlock("cinnamon_log", new StrippableLogBlock(MaterialColor.WOOD, getBlockProperties(Material.WOOD).hardnessAndResistance(2f).sound(SoundType.WOOD), stripped));
     registerBlock("cinnamon_leaves", new CustomLeavesBlock(getBlockProperties(Material.LEAVES).hardnessAndResistance(0.2f).tickRandomly().sound(SoundType.PLANT)));
     registerBlock("cinnamon_sapling", new CinnamonSapling(getBlockProperties(Material.PLANTS).doesNotBlockMovement().tickRandomly().hardnessAndResistance(0).sound(SoundType.PLANT)));
+    
+    
   }
   
   @SubscribeEvent
@@ -167,6 +176,47 @@ public class NomRegistry
     
     registerItem("grinder", new Item(getItemProperties().maxDamage(120)));
   }
+  
+  @SubscribeEvent
+  public static void registerTileEntities(RegistryEvent.Register<TileEntityType<?>> event)
+  {
+    blockTileRegistry = event.getRegistry();
+    
+//    TileEntityType<ApiaryTile> type = registerType("apiary", () ->  new ApiaryTile(), NomBlocks.APIARY);
+    
+    blockTileRegistry.register(TileEntityType.Builder.create(ApiaryTile::new, NomBlocks.APIARY).build(null).setRegistryName(Nom.MODID, "apiary"));
+  }
+//
+//  private static <T extends TileEntity> TileEntityType<? extends T> registerType(String name, Supplier<? extends T> supplier, Block... blocks)
+//  {
+//
+//    Type<?> type = null;
+//
+//    try
+//    {
+//      type = DataFixesManager.getDataFixer().getSchema(DataFixUtils.makeKey(SharedConstants.getVersion().getWorldVersion())).getChoiceType(TypeReferences.BLOCK_ENTITY, name);
+//    }
+//    catch (IllegalArgumentException e)
+//    {
+//      if (SharedConstants.developmentMode)
+//      {
+//        throw e;
+//      }
+//
+//      Nom.LOGGER.warn("Couldn't find data fixer for block entity {}", name);
+//    }
+//
+//    if (blocks.length == 0)
+//    {
+//      Nom.LOGGER.warn("No blocks provided for Block Entity {}", name);
+//    }
+//
+//    TileEntityType<? extends T> build = TileEntityType.Builder.create(supplier, blocks).build(type);
+//
+//
+//
+//    return build;
+//  }
   
   private static Food.Builder builder(int hunger, float saturation)
   {
