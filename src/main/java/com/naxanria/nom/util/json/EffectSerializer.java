@@ -30,7 +30,7 @@ public class EffectSerializer implements IJsonSerializer<EffectInstance>
     return object;
   }
   
-  private String getProperId(String id)
+  public static String getProperId(String id)
   {
     if (id.contains("effect."))
     {

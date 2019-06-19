@@ -1,11 +1,14 @@
 package com.naxanria.nom;
 
+import com.naxanria.nom.command.NomCommands;
 import com.naxanria.nom.world.NomWorldGen;
-import net.minecraft.client.Minecraft;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraftforge.fml.loading.FMLLoader;
 import net.minecraftforge.fml.loading.FMLPaths;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -28,6 +31,8 @@ public class Nom
     
     FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
     FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setupClient);
+    
+    MinecraftForge.EVENT_BUS.addListener(this::serverStarting);
   
     configFolder = FMLPaths.CONFIGDIR.get().resolve(MODID + "/");
     File configFolderFile = configFolder.toFile();
@@ -42,6 +47,12 @@ public class Nom
         LOGGER.warn("failed to create config folder");
       }
     }
+  }
+  
+  private void serverStarting(final FMLServerStartingEvent event)
+  {
+    // todo: make this config sensitive
+    new NomCommands(event.getCommandDispatcher(), true);
   }
   
   private void setup(final FMLCommonSetupEvent event)

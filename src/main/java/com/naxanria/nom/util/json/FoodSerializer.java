@@ -67,7 +67,7 @@ public class FoodSerializer implements IJsonSerializer<Food>
       for (int i = 0; i < effects.size(); i++)
       {
         EffectInstance instance = Serializers.EFFECT_SERIALIZER.deserialize(effects.get(i).getAsJsonObject().getAsJsonObject("effect"));
-        float chance = JSONUtils.getFloat(object, "chance", 1.0f);
+        float chance = JSONUtils.getFloat(effects.get(i).getAsJsonObject(), "chance", 1.0f);
         
         builder.effect(instance, chance);
       }

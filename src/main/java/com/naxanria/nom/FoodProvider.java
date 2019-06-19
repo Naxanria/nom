@@ -87,4 +87,9 @@ public class FoodProvider
     
     return foodMap.get(id);
   }
+  
+  public static void clear()
+  {
+    foodMap.clear();
+  }
 }
