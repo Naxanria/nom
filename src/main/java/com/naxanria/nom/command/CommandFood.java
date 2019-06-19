@@ -80,7 +80,6 @@ public class CommandFood extends NomCommand
           .next("Chance:").darkGreen().next(chance).aqua()
           .build()
         );
-        
       }
     }
   
