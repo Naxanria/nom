@@ -1,5 +1,6 @@
 package com.naxanria.nom.block;
 
+import com.naxanria.nom.block.core.HarvestableBlock;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraftforge.common.ToolType;
 

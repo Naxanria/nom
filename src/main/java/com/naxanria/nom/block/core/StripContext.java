@@ -1,4 +1,4 @@
-package com.naxanria.nom.block;
+package com.naxanria.nom.block.core;
 
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;

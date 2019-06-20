@@ -1,15 +1,17 @@
 package com.naxanria.nom;
 
-import com.mojang.datafixers.DataFixUtils;
-import com.mojang.datafixers.types.Type;
 import com.naxanria.nom.Item.FoodItem;
 import com.naxanria.nom.block.*;
+import com.naxanria.nom.block.core.CustomLeavesBlock;
+import com.naxanria.nom.block.core.CustomLogBlock;
+import com.naxanria.nom.block.core.StrippableLogBlock;
+import com.naxanria.nom.block.core.TileBlock;
 import com.naxanria.nom.block.trees.CinnamonSapling;
 import com.naxanria.nom.block.trees.CinnamonTreeFeature;
+import com.naxanria.nom.container.ApiaryContainer;
 import com.naxanria.nom.recipe.GrinderRecipe;
 import com.naxanria.nom.tile.ApiaryTile;
 import com.naxanria.nom.util.BiomeList;
-import com.naxanria.nom.util.StringUtil;
 import com.naxanria.nom.util.Time;
 import com.naxanria.nom.util.WorldUtil;
 import com.naxanria.nom.util.json.JsonProvider;
@@ -22,21 +24,16 @@ import net.minecraft.block.Blocks;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialColor;
-import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.item.*;
 import net.minecraft.item.crafting.IRecipeSerializer;
 import net.minecraft.potion.Effect;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.SharedConstants;
-import net.minecraft.util.datafix.DataFixesManager;
-import net.minecraft.util.datafix.TypeReferences;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.biome.Biomes;
 import net.minecraft.world.gen.GenerationStage;
@@ -44,8 +41,6 @@ import net.minecraft.world.gen.feature.NoFeatureConfig;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.IForgeRegistry;
 
 import java.io.File;
@@ -53,8 +48,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Supplier;
-import java.util.logging.Logger;
 
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
 public class NomRegistry
@@ -128,6 +121,17 @@ public class NomRegistry
     blockRegistry.register(block);
     
     return block;
+  }
+  
+  @SubscribeEvent
+  public static void onRegisterContainerType(final RegistryEvent.Register<ContainerType<?>> event)
+  {
+    IForgeRegistry<ContainerType<?>> registry = event.getRegistry();
+    
+    registry.register
+    (
+      new ContainerType<ApiaryContainer>(ApiaryContainer::new).setRegistryName(Nom.MODID, "apiary_container")
+    );
   }
   
   @SubscribeEvent

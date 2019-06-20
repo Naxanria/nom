@@ -1,4 +1,4 @@
-package com.naxanria.nom.block;
+package com.naxanria.nom.block.core;
 
 import com.naxanria.nom.util.IntRange;
 import net.minecraft.block.Block;
