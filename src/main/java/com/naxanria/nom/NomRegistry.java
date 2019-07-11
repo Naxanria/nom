@@ -26,9 +26,12 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialColor;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
+import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.item.*;
 import net.minecraft.item.crafting.IRecipeSerializer;
+import net.minecraft.network.PacketBuffer;
 import net.minecraft.potion.Effect;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
@@ -41,6 +44,7 @@ import net.minecraft.world.gen.feature.NoFeatureConfig;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.network.IContainerFactory;
 import net.minecraftforge.registries.IForgeRegistry;
 
 import java.io.File;
@@ -130,7 +134,7 @@ public class NomRegistry
     
     registry.register
     (
-      new ContainerType<ApiaryContainer>(ApiaryContainer::new).setRegistryName(Nom.MODID, "apiary_container")
+      new ContainerType<>((IContainerFactory<ApiaryContainer>) ApiaryContainer::new).setRegistryName(Nom.MODID, "apiary_container")
     );
   }
   
@@ -141,7 +145,7 @@ public class NomRegistry
     blockRegistry = event.getRegistry();
     
     registerBlock("bee_hive", new BeeHiveBlock(Block.Properties.create(NomMaterials.BEE_HIVE)));
-    registerBlock("apiary", new TileBlock<ApiaryTile>(getBlockProperties(Material.WOOD), ((block, world, state) -> new ApiaryTile())));
+    registerBlock("apiary", new ApiaryBlock(getBlockProperties(Material.WOOD)));
     
     Block stripped = registerBlock("stripped_cinnamon_log", new CustomLogBlock(MaterialColor.WOOD, Block.Properties.create(Material.WOOD).hardnessAndResistance(2f).sound(SoundType.WOOD)));
     registerBlock("cinnamon_log", new StrippableLogBlock(MaterialColor.WOOD, getBlockProperties(Material.WOOD).hardnessAndResistance(2f).sound(SoundType.WOOD), stripped));

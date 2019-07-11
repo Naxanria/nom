@@ -66,6 +66,8 @@ public class Nom
   private void setupClient(final FMLClientSetupEvent event)
   {
     LOGGER.info("Client setup");
+    
+    NomClientRegistry.registerScreens();
   }
   
   public static File getConfigSubFile(String fileName)

@@ -94,4 +94,19 @@ public class ApiaryTile extends BaseTileEntityTicking
     output.deserializeNBT(compound.getCompound("output"));
     bees = compound.getInt("bees");
   }
+  
+  public int getBees()
+  {
+    return bees;
+  }
+  
+  public ItemStackHandler getInput()
+  {
+    return input;
+  }
+  
+  public ItemStackHandler getOutput()
+  {
+    return output;
+  }
 }
