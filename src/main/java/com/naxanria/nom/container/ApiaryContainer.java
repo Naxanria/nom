@@ -6,6 +6,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.network.PacketBuffer;
+import net.minecraft.util.IntReferenceHolder;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.items.SlotItemHandler;
@@ -24,6 +25,24 @@ public class ApiaryContainer extends TEContainer<ApiaryTile>
     
     addSlot(new SlotItemHandler(tileEntity.getInput(), 0, 56, 36));
     addSlot(new SlotItemHandler(tileEntity.getOutput(), 0, 114, 36));
+  
+    trackInt
+    (
+      new IntReferenceHolder()
+      {
+        @Override
+        public int get()
+        {
+          return tileEntity.getTime();
+        }
+    
+        @Override
+        public void set(int i)
+        {
+          tileEntity.setTime(i);
+        }
+      }
+    );
   }
   
   public ApiaryContainer(int id, PlayerInventory inventory, PacketBuffer data)

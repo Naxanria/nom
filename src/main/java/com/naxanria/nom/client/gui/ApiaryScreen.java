@@ -28,11 +28,12 @@ public class ApiaryScreen extends TEContainerScreen<ApiaryTile, ApiaryContainer>
     GlStateManager.color4f(1, 1, 1, 1);
     minecraft.getTextureManager().bindTexture(BACKGROUND);
     blit(x, y, 0, 0, xSize, ySize);
-    
+    int w = (int) (tile.progress() * 23);
+    blit(x + 80, y + 34, 176, 0, w + 1, 16);
     drawCenteredString(font, title.getFormattedText(), width / 2, y + 6, 0xffffffff);
     
-    DrawHelper.progressBar(x + 80, y + 41, 31, 3, tile.progress(),0xffffffff, 0xff121212);
-    drawCenteredString(font, tile.progress() + "" ,x + 80, y + 41 - 10, 0xffffffff);
+//    DrawHelper.progressBar(x + 80, y + 41, 31, 3, tile.progress(),0xffffffff, 0xff121212);
+//    drawCenteredString(font, tile.progress() + "" ,x + 80, y + 41 - 10, 0xffffffff);
     
 //    drawCenteredString(font, "Slots: " + container.inventorySlots.size(), x, y, 0xffffffff);
   }

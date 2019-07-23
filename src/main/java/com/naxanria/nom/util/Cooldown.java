@@ -78,6 +78,11 @@ public class Cooldown implements INBTUpdate
   
   public float getProgress()
   {
+    if (cooldown == 0)
+    {
+      return 0;
+    }
+    
     return (cooldown - getRemaining()) / (float) cooldown;
   }
   

@@ -54,6 +54,12 @@ public class ApiaryTile extends BaseTileEntityTicking
       
       produceCooldown.update();
   
+      ItemStack out = output.getStackInSlot(0);
+      if (out.getCount() == out.getMaxStackSize())
+      {
+        produceCooldown.setTime(0);
+      }
+  
 //      Nom.LOGGER.info(produceCooldown.getProgress() + " " + produceCooldown.getCooldown() + " " + produceCooldown.getRemaining());
     }
     else
@@ -127,7 +133,17 @@ public class ApiaryTile extends BaseTileEntityTicking
   
   public float progress()
   {
-    Nom.LOGGER.info(produceCooldown.getProgress());
+//    Nom.LOGGER.info(produceCooldown.getProgress());
     return produceCooldown.getProgress();
+  }
+  
+  public void setTime(int time)
+  {
+    produceCooldown.setTime(time);
+  }
+  
+  public int getTime()
+  {
+    return produceCooldown.getTime();
   }
 }
