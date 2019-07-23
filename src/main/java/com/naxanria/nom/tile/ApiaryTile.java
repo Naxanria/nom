@@ -92,7 +92,7 @@ public class ApiaryTile extends BaseTileEntityTicking
     if (bees < 16 && RAND.nextFloat() <= 0.3f)
     {
       input.getStackInSlot(0).grow(1);
-      Nom.LOGGER.info("BEES! {}", bees);
+//      Nom.LOGGER.info("BEES! {}", bees);
     }
     
     markDirty();
