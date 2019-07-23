@@ -44,13 +44,17 @@ public class ApiaryTile extends BaseTileEntityTicking
   @Override
   protected void tileUpdate()
   {
+    
+    
     bees = input.getStackInSlot(0).getCount();
     
     if (bees >= 2)
     {
       produceCooldown.setCooldown(200 - (Math.max(bees - 2, 0) * 7));
-  
+      
       produceCooldown.update();
+  
+//      Nom.LOGGER.info(produceCooldown.getProgress() + " " + produceCooldown.getCooldown() + " " + produceCooldown.getRemaining());
     }
     else
     {
@@ -65,9 +69,20 @@ public class ApiaryTile extends BaseTileEntityTicking
       return;
     }
     
-    Nom.LOGGER.info("Produced");
+//    Nom.LOGGER.info("Produced");
   
-    WorldUtil.spawnAsEntity(world, getPos(), new ItemStack(NomItems.HONEY, RAND.nextInt(2) + 1));
+//    WorldUtil.spawnAsEntity(world, getPos(), new ItemStack(NomItems.HONEY, RAND.nextInt(2) + 1));
+  
+    ItemStack out = output.getStackInSlot(0);
+    if (out.isEmpty() || out.getItem() != NomItems.HONEY_COMB)
+    {
+      output.setStackInSlot(0, new ItemStack(NomItems.HONEY_COMB));
+    }
+    else if (out.getCount() < out.getMaxStackSize())
+    {
+      out.grow(1);
+    }
+  
     if (bees < 16 && RAND.nextFloat() <= 0.3f)
     {
       input.getStackInSlot(0).grow(1);
@@ -108,5 +123,11 @@ public class ApiaryTile extends BaseTileEntityTicking
   public ItemStackHandler getOutput()
   {
     return output;
+  }
+  
+  public float progress()
+  {
+    Nom.LOGGER.info(produceCooldown.getProgress());
+    return produceCooldown.getProgress();
   }
 }

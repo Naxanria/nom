@@ -9,6 +9,7 @@ import io.netty.buffer.Unpooled;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.network.PacketBuffer;
@@ -18,6 +19,7 @@ import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.network.NetworkHooks;
 
 import javax.annotation.Nullable;
 
@@ -43,8 +45,13 @@ public class ApiaryBlock extends TileBlock<ApiaryTile>
     {
       return false;
     }
-    
-    player.openContainer(getContainer(state, worldIn, pos));
+  
+    NetworkHooks.openGui(
+      (ServerPlayerEntity) player,
+      getContainer(state, worldIn, pos),
+      data -> data.writeBlockPos(pos)
+    );
+//    player.openContainer(getContainer(state, worldIn, pos));
     
     return true;
   }
@@ -53,6 +60,7 @@ public class ApiaryBlock extends TileBlock<ApiaryTile>
   @Override
   public INamedContainerProvider getContainer(BlockState state, World worldIn, BlockPos pos)
   {
+    
     if (provider == null)
     {
       provider = new Provider(state, worldIn, pos);
@@ -90,17 +98,19 @@ public class ApiaryBlock extends TileBlock<ApiaryTile>
     @Override
     public Container createMenu(int windowId, PlayerInventory inventory, PlayerEntity player)
     {
-      ApiaryContainer container = ApiaryContainer.TYPE.create(windowId, inventory, DataUtil.pos(pos));
-      container.setTileEntity((ApiaryTile) world.getTileEntity(pos));
+//      ApiaryContainer container = ApiaryContainer.TYPE.create(windowId, inventory, DataUtil.pos(pos));
+//      container.setTileEntity((ApiaryTile) world.getTileEntity(pos));
+//
+//      if (container.getTileEntity() == null)
+//      {
+//        Nom.LOGGER.error("Tile is null!");
+//
+//        return null;
+//      }
+//
+//      return container;
       
-      if (container.getTileEntity() == null)
-      {
-        Nom.LOGGER.error("Tile is null!");
-        
-        return null;
-      }
-      
-      return container;
+      return  new ApiaryContainer(windowId, inventory, player.world, pos);
     }
   }
 }

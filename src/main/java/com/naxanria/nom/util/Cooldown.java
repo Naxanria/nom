@@ -73,7 +73,7 @@ public class Cooldown implements INBTUpdate
   
   public int getRemaining()
   {
-    return (time >- cooldown) ? 0 : cooldown - time;
+    return (time >= cooldown) ? 0 : cooldown - time;
   }
   
   public float getProgress()

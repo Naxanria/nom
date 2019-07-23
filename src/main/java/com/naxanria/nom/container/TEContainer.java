@@ -10,7 +10,7 @@ import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
 
-public abstract class TEContainer<TE extends TileEntity> extends Container
+public abstract class TEContainer<TE extends TileEntity> extends ContainerBase
 {
   protected TE tileEntity;
   

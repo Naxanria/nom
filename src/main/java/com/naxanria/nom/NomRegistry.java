@@ -41,6 +41,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.biome.Biomes;
 import net.minecraft.world.gen.GenerationStage;
 import net.minecraft.world.gen.feature.NoFeatureConfig;
+import net.minecraftforge.common.extensions.IForgeContainerType;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -134,7 +135,7 @@ public class NomRegistry
     
     registry.register
     (
-      new ContainerType<>((IContainerFactory<ApiaryContainer>) ApiaryContainer::new).setRegistryName(Nom.MODID, "apiary_container")
+      IForgeContainerType.create(ApiaryContainer::new).setRegistryName(Nom.MODID, "apiary_container")
     );
   }
   
