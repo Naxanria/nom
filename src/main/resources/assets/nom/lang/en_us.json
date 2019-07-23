@@ -5,6 +5,20 @@
   "item.nom.honey_glazed_carrot": "Honey Glazed Carrot",
   "item.nom.honey_comb": "Honey Comb",
   "item.nom.honey": "Honey",
+  "item.nom.cinnamon": "Cinnamon",
+  "item.nom.dough": "Dough",
+  "item.nom.bun": "Bun",
+  "item.nom.cinnamon_bun": "Cinnamon Bun",
+  "item.nom.bee": "Bee",
+  "item.nom.flour": "Flour",
+  "item.nom.grinder": "Grinder",
 
-  "block.nom.bee_hive": "Bee Hive"
+  "block.nom.bee_hive": "Bee Hive",
+  "block.nom.apiary": "Apiary",
+  "block.nom.stripped_cinnamon_log": "Stripped Cinnamon Wood",
+  "block.nom.cinnamon_log": "Cinnamon Wood",
+  "block.nom.cinnamon_leaves": "Cinnamon Leaves",
+  "block.nom.cinnamon_sapling": "Cinnamon Sapling",
+
+  "nom:tile.gui.apiary": "Apiary"
 }
