@@ -21,11 +21,11 @@ public class ApiaryContainer extends TEContainer<ApiaryTile>
   {
     super(TYPE, id, inventory, world, pos);
   
-    createInventorySlots(inventory, 8, 84);
-    
     addSlot(new SlotItemHandler(tileEntity.getInput(), 0, 56, 36));
     addSlot(new SlotItemHandler(tileEntity.getOutput(), 0, 114, 36));
   
+    createInventorySlots(inventory, 8, 84);
+    
     trackInt
     (
       new IntReferenceHolder()
