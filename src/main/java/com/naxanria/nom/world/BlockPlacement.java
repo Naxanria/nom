@@ -31,7 +31,7 @@ public class BlockPlacement extends SimplePlacement<NoPlacementConfig>
 //  }
   
   @Override
-  protected Stream<BlockPos> func_212852_a_(Random random, NoPlacementConfig config, BlockPos pos)
+  protected Stream<BlockPos> getPositions(Random random, NoPlacementConfig config, BlockPos pos)
   {
     return IntStream.range(0, frequency).mapToObj(i ->
     {

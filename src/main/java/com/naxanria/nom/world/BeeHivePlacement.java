@@ -24,9 +24,9 @@ public class BeeHivePlacement extends SimplePlacement<NoPlacementConfig>
   }
   
   @Override
-  protected Stream<BlockPos> func_212852_a_(Random random, NoPlacementConfig config, BlockPos pos)
+  protected Stream<BlockPos> getPositions(Random random, NoPlacementConfig config, BlockPos blockPos)
   {
-    return Stream.of(pos);
+    return Stream.of(blockPos);
   }
   
   @Override
