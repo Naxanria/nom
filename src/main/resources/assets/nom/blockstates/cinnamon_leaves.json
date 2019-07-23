@@ -2,7 +2,7 @@
   "forge_marker": 1,
   "variants": {
     "": [
-      { "model" : "nom:cinnamon_leaves" }
+      { "model" : "nom:block/cinnamon_leaves" }
     ]
   }
 }

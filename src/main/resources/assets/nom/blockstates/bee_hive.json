@@ -2,7 +2,7 @@
   "forge_marker": 1,
   "variants": {
     "": [
-      { "model" : "nom:bee_hive" }
+      { "model" : "nom:block/bee_hive" }
     ]
   }
 }
