@@ -1,18 +1,14 @@
 package com.naxanria.nom.block;
 
-import com.naxanria.nom.Nom;
 import com.naxanria.nom.block.core.TileBlock;
 import com.naxanria.nom.container.ApiaryContainer;
 import com.naxanria.nom.tile.ApiaryTile;
-import com.naxanria.nom.util.DataUtil;
-import io.netty.buffer.Unpooled;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.INamedContainerProvider;
-import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
@@ -30,7 +26,7 @@ public class ApiaryBlock extends TileBlock<ApiaryTile>
   
   public ApiaryBlock(Properties properties)
   {
-    super(properties, PROVIDER);
+    super(properties.hardnessAndResistance(0.4f), PROVIDER);
   }
   
   @Override

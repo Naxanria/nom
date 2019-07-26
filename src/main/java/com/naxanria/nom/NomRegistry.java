@@ -145,10 +145,10 @@ public class NomRegistry
     Nom.LOGGER.info("Block registration");
     blockRegistry = event.getRegistry();
     
-    registerBlock("bee_hive", new BeeHiveBlock(Block.Properties.create(NomMaterials.BEE_HIVE)));
     registerBlock("apiary", new ApiaryBlock(getBlockProperties(Material.WOOD)));
+    registerBlock("bee_hive", new BeeHiveBlock(getBlockProperties(NomMaterials.BEE_HIVE)));
     
-    Block stripped = registerBlock("stripped_cinnamon_log", new CustomLogBlock(MaterialColor.WOOD, Block.Properties.create(Material.WOOD).hardnessAndResistance(2f).sound(SoundType.WOOD)));
+    Block stripped = registerBlock("stripped_cinnamon_log", new CustomLogBlock(MaterialColor.WOOD, getBlockProperties(Material.WOOD).hardnessAndResistance(2f).sound(SoundType.WOOD)));
     registerBlock("cinnamon_log", new StrippableLogBlock(MaterialColor.WOOD, getBlockProperties(Material.WOOD).hardnessAndResistance(2f).sound(SoundType.WOOD), stripped));
     registerBlock("cinnamon_leaves", new CustomLeavesBlock(getBlockProperties(Material.LEAVES).hardnessAndResistance(0.2f).tickRandomly().sound(SoundType.PLANT)));
     registerBlock("cinnamon_sapling", new CinnamonSapling(getBlockProperties(Material.PLANTS).doesNotBlockMovement().tickRandomly().hardnessAndResistance(0).sound(SoundType.PLANT)));

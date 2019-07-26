@@ -10,7 +10,7 @@ public class BeeHiveBlock extends HarvestableBlock
   {
     super(properties.hardnessAndResistance(1.0f).tickRandomly(), ToolType.AXE, 0, 2);
   }
-  
+
   @Override
   public BlockRenderLayer getRenderLayer()
   {

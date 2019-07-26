@@ -6,7 +6,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "nom:bee_hive"
+          "name": "nom:apiary"
         }
       ],
       "conditions": [
@@ -14,8 +14,8 @@
           "condition": "minecraft:survives_explosion"
         }
       ],
-      "name": "nom:bee_hive"
+      "name": "nom:apiary"
     }
   ],
-  "name": "nom:bee_hive"
+  "name": "nom:apiary"
 }
