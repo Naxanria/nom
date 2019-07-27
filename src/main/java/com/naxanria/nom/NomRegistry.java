@@ -2,10 +2,7 @@ package com.naxanria.nom;
 
 import com.naxanria.nom.Item.FoodItem;
 import com.naxanria.nom.block.*;
-import com.naxanria.nom.block.core.CustomLeavesBlock;
-import com.naxanria.nom.block.core.CustomLogBlock;
-import com.naxanria.nom.block.core.StrippableLogBlock;
-import com.naxanria.nom.block.core.TileBlock;
+import com.naxanria.nom.block.core.*;
 import com.naxanria.nom.block.trees.CinnamonSapling;
 import com.naxanria.nom.block.trees.CinnamonTreeFeature;
 import com.naxanria.nom.container.ApiaryContainer;
@@ -26,12 +23,9 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialColor;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.item.*;
 import net.minecraft.item.crafting.IRecipeSerializer;
-import net.minecraft.network.PacketBuffer;
 import net.minecraft.potion.Effect;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
@@ -45,7 +39,6 @@ import net.minecraftforge.common.extensions.IForgeContainerType;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.network.IContainerFactory;
 import net.minecraftforge.registries.IForgeRegistry;
 
 import java.io.File;
@@ -63,7 +56,7 @@ public class NomRegistry
   private static IForgeRegistry<Block> blockRegistry;
   private static IForgeRegistry<TileEntityType<?>> blockTileRegistry;
   
-  private static Map<String, FoodItem> foodMap = new HashMap<>();
+  private static Map<String, Item> foodMap = new HashMap<>();
   
   private static ItemGroup itemGroup = new ItemGroup(Nom.MODID)
   {
@@ -85,7 +78,7 @@ public class NomRegistry
   
   private static Item registerFood(String name)
   {
-    Food food = FoodProvider.getFood(name);
+    Food food = getFood(name);
     FoodItem foodItem = registerItem(name, new FoodItem(getItemProperties().food(food)));
     
     foodMap.put(name, foodItem);
@@ -107,6 +100,18 @@ public class NomRegistry
     }
     
     return registerItem(name, new Item(getItemProperties().food(builder.build())));
+  }
+  
+  private static <T extends Item> T registerFood(String name, T item)
+  {
+    foodMap.put(name, item);
+    
+    return item;
+  }
+  
+  private static Food getFood(String name)
+  {
+    return FoodProvider.getFood(name);
   }
   
   private static <T extends Block> T registerBlock(String name, T block)
@@ -152,6 +157,8 @@ public class NomRegistry
     registerBlock("cinnamon_log", new StrippableLogBlock(MaterialColor.WOOD, getBlockProperties(Material.WOOD).hardnessAndResistance(2f).sound(SoundType.WOOD), stripped));
     registerBlock("cinnamon_leaves", new CustomLeavesBlock(getBlockProperties(Material.LEAVES).hardnessAndResistance(0.2f).tickRandomly().sound(SoundType.PLANT)));
     registerBlock("cinnamon_sapling", new CinnamonSapling(getBlockProperties(Material.PLANTS).doesNotBlockMovement().tickRandomly().hardnessAndResistance(0).sound(SoundType.PLANT)));
+    
+    registerBlock("onions", new NomCropsBlock(getBlockProperties(Material.PLANTS), CropsProperties.create(3, () -> NomItems.ONION)), true);
   }
   
   @SubscribeEvent
@@ -176,6 +183,8 @@ public class NomRegistry
     registerFood("dough");
     registerFood("bun");
     registerFood("cinnamon_bun");
+    
+//    registerFood("onion", new BlockNamedItem(NomBlocks.ONIONS, getItemProperties()));
   
     registerItem("honey_comb", new Item(getItemProperties()));
     registerItem("bee", new Item(getItemProperties().maxStackSize(16)));
@@ -185,6 +194,8 @@ public class NomRegistry
     
     registerItem("grinder", new Item(getItemProperties().maxDamage(120)));
   }
+  
+  
   
   private static void foodDefaults()
   {
@@ -196,6 +207,7 @@ public class NomRegistry
     FoodProvider.add("dough", builder(1, 0.2f).effect(getEffect(Effects.NAUSEA, Time.Ticks.SECOND * 4, 1), 0.3f).build());
     FoodProvider.add("bun", builder(6, 2f).build());
     FoodProvider.add("cinnamon_bun", builder(8, 8f).effect(getEffect(Effects.ABSORPTION, Time.Ticks.MINUTE * 2, 1), 1f).build());
+    FoodProvider.add("onion", builder(1, 0.1f).build());
   }
   
   @SubscribeEvent
@@ -215,9 +227,17 @@ public class NomRegistry
     for (String key :
       foodMap.keySet())
     {
-      FoodItem foodItem = foodMap.get(key);
+      Item item = foodMap.get(key);
       Food food = FoodProvider.getFood(key);
-      foodItem.setFood(food);
+      if (item instanceof FoodItem)
+      {
+        FoodItem foodItem = (FoodItem) item;
+        foodItem.setFood(food);
+      }
+      else
+      {
+        // todo: make food be easier transformable.
+      }
     }
   
 //    Nom.LOGGER.info("Reloading foods is not implemented yet");
