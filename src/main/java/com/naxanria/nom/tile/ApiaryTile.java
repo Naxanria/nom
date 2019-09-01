@@ -1,10 +1,8 @@
 package com.naxanria.nom.tile;
 
-import com.naxanria.nom.Nom;
 import com.naxanria.nom.NomItems;
 import com.naxanria.nom.NomTileTypes;
 import com.naxanria.nom.util.Cooldown;
-import com.naxanria.nom.util.WorldUtil;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraftforge.items.ItemStackHandler;

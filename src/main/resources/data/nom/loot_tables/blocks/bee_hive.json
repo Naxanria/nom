@@ -5,17 +5,53 @@
       "rolls": 1,
       "entries": [
         {
-          "type": "minecraft:item",
-          "name": "nom:bee_hive"
-        }
-      ],
-      "conditions": [
-        {
-          "condition": "minecraft:survives_explosion"
+          "type": "minecraft:alternatives",
+          "children": [
+            {
+              "type": "minecraft:item",
+              "conditions": [
+                {
+                  "condition": "minecraft:match_tool",
+                  "predicate": {
+                    "enchantments": [
+                      {
+                        "enchantment": "minecraft:silk_touch",
+                        "levels": {
+                          "min": 1
+                        }
+                      }
+                    ]
+                  }
+                }
+              ],
+              "name": "nom:bee_hive"
+            },
+            {
+              "type": "minecraft:item",
+              "functions": [
+                {
+                  "function": "set_count",
+                  "count": {
+                    "min": 2.0,
+                    "max": 5.0,
+                    "type": "minecraft:uniform"
+                  }
+                },
+                {
+                  "function": "minecraft:apply_bonus",
+                  "enchantment": "minecraft:fortune",
+                  "formula": "minecraft:ore_drops"
+                },
+                {
+                  "function": "minecraft:explosion_decay"
+                }
+              ],
+              "name": "nom:honey_comb"
+            }
+          ]
         }
       ],
       "name": "nom:bee_hive"
     }
-  ],
-  "name": "nom:bee_hive"
+  ]
 }
